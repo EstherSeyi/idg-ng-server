@@ -1,10 +1,22 @@
 #!/usr/bin/env node
 
 /**
+ * Read environment variables
+ */
+require('dotenv').config();
+
+/**
+ * Believe it or not, reading process.env is expensive in NODE.js
+ * https://github.com/nodejs/node/issues/3104
+ * We want to cache process.env to a regular object since we don't expect it to change at runtime anyway.
+ */
+process.env = JSON.parse(JSON.stringify(process.env));
+
+/**
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('../dist/app');
 var debug = require('debug')('idp-ng-server:server');
 var http = require('http');
 
@@ -58,9 +70,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -83,8 +93,6 @@ function onError(error) {
 
 function onListening() {
   var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
