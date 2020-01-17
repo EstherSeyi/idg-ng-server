@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { seedUsers } from './seed';
 
 async function dbConnection() {
   await mongoose
@@ -10,6 +11,8 @@ async function dbConnection() {
     })
     .then(mongoDBConnected);
 
+  await disconnectDB();
+  await seedUsers();
   mongoose.connection.on('disconnected', mongoDBDisconnected);
   mongoose.connection.on('error', mongoDBError);
 }
@@ -25,6 +28,11 @@ function mongoDBDisconnected() {
 function mongoDBError(err: Error) {
   console.error('MongoDB Error', err);
   process.exit(1);
+}
+
+async function disconnectDB() {
+  await mongoose.connection.db.dropDatabase();
+  console.log('DB dropped');
 }
 
 export default dbConnection;
