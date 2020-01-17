@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 import express, { Request, Response, NextFunction } from 'express';
+import session from 'express-session';
 import compression from 'compression';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -44,6 +45,20 @@ app.use(
 );
 
 app.disable('x-powered-by');
+app.use(
+  session({
+    name: 'idp-sesh',
+    secret: `${process.env.SESSION_SECRET}`,
+    resave: true,
+    rolling: true,
+    saveUninitialized: false,
+    cookie: {
+      sameSite: 'none',
+      httpOnly: true,
+      secure: IN_PROD,
+    },
+  }),
+);
 app.use(compression());
 app.use(cors());
 
