@@ -5,7 +5,9 @@ import compression from 'compression';
 import cors from 'cors';
 import morgan from 'morgan';
 import dbConnection from './config/dbconnection';
+
 var logger = require('morgan');
+const MongoStore = require('connect-mongo')(session);
 
 import loginRouter from './routes/auth';
 
@@ -47,6 +49,10 @@ app.use(
 app.disable('x-powered-by');
 app.use(
   session({
+    store: new MongoStore({
+      url: process.env.MONGO_URL,
+      ttl: 14 * 24 * 60 * 60,
+    }),
     name: 'idp-sesh',
     secret: `${process.env.SESSION_SECRET}`,
     resave: true,

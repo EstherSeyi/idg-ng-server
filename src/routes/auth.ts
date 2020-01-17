@@ -38,19 +38,17 @@ router.post('/me', async function(req, res) {
     const fetchedUser = await getAUser(user.id);
 
     if (!fetchedUser) {
-      res.status(401).json({ message: 'please login' });
-      return;
+      return res.status(401).json({ message: 'please login' });
     }
 
     const { id, email, name } = fetchedUser;
 
-    res.status(200).json({
+    return res.status(200).json({
       data: { id, email, name },
     });
-    return;
   }
 
-  res.status(401).json({ message: 'please login' });
+  return res.status(401).json({ message: 'please login' });
 });
 
 router.post('/logout', async function(req, res) {
