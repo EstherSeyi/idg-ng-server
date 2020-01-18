@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { attemptLogin } from '../controllers/auth';
-import { getAUser } from '../controllers/user';
+import { attemptLogin } from '../services/auth';
+import { getAUser } from '../services/user';
 import { validateLogin } from '../validation/user';
 
 const router = Router();
