@@ -3,43 +3,55 @@ import Candidate from '../models/candidate';
 import Family from '../models/family';
 
 export async function getCampsCount() {
-  return Camp.estimatedDocumentCount((err, count) => {
+  const numberOfCamps = await Camp.estimatedDocumentCount((err, count) => {
     if (err) {
       throw new Error('something went wrong');
     }
 
     return count;
   });
+
+  return { camps: numberOfCamps };
 }
 
 export async function getCandidateCount() {
-  return Candidate.estimatedDocumentCount((err, count) => {
-    if (err) {
-      throw new Error('something went wrong');
-    }
+  const numberOfCandidates = await Candidate.estimatedDocumentCount(
+    (err, count) => {
+      if (err) {
+        throw new Error('something went wrong');
+      }
 
-    return count;
-  });
+      return count;
+    },
+  );
+
+  return { candidates: numberOfCandidates };
 }
 
 export async function getFamilyCount() {
-  return Family.estimatedDocumentCount((err, count) => {
+  const numberOfFamilies = await Family.estimatedDocumentCount((err, count) => {
     if (err) {
       throw new Error('something went wrong');
     }
 
     return count;
   });
+
+  return { families: numberOfFamilies };
 }
 
 export async function getTotalChildren() {
-  return Family.aggregate([
+  const results = await Family.aggregate([
     { $group: { _id: null, childTotal: { $sum: '$children' } } },
   ]);
+
+  const children = results[0].childTotal;
+
+  return { children };
 }
 
 export async function getStateStats() {
-  return Camp.aggregate([
+  const allStates = await Camp.aggregate([
     {
       $group: {
         _id: '$name',
@@ -49,10 +61,19 @@ export async function getStateStats() {
       },
     },
   ]);
+
+  const states = allStates.map(state => {
+    return {
+      state: state._id,
+      total: state.total,
+    };
+  });
+
+  return { states };
 }
 
 export async function getGenderStats() {
-  return Candidate.aggregate([
+  const genderStats = await Candidate.aggregate([
     {
       $group: {
         _id: '$gender',
@@ -62,10 +83,19 @@ export async function getGenderStats() {
       },
     },
   ]);
+
+  const gender = genderStats.map(gender => {
+    return {
+      gender: gender._id,
+      total: gender.total,
+    };
+  });
+
+  return { gender };
 }
 
 export async function getMaritalStats() {
-  return Candidate.aggregate([
+  const maritalStats = await Candidate.aggregate([
     {
       $group: {
         _id: '$marital_status',
@@ -75,4 +105,13 @@ export async function getMaritalStats() {
       },
     },
   ]);
+
+  const maritalStatus = maritalStats.map(status => {
+    return {
+      status: status._id,
+      total: status.total,
+    };
+  });
+
+  return { maritalStatus };
 }
