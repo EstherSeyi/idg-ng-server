@@ -6,10 +6,10 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dbConnection from './config/dbconnection';
 
-var logger = require('morgan');
-const MongoStore = require('connect-mongo')(session);
-
 import loginRouter from './routes/auth';
+import aggregateRouter from './routes/total';
+
+const MongoStore = require('connect-mongo')(session);
 
 const IN_PROD = process.env.NODE_ENV === 'production';
 
@@ -68,13 +68,13 @@ app.use(
 app.use(compression());
 app.use(cors());
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes here
 app.get('/', (_req, res) => res.json('hello world'));
 app.use('/auth', loginRouter);
+app.use('/aggregate', aggregateRouter);
 
 // catch 404 and forward to error handler
 app.use(function(_req: Request, _res: Response, next: NextFunction) {
