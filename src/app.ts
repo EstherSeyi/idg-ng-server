@@ -79,7 +79,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes here
-app.use('/', (_req, res) => res.json('hello world'));
+app.get('/', (_req, res) => res.json('hello world'));
 app.use('/auth', loginRouter);
 app.use('/aggregate', aggregateRouter);
 app.use('/candidates', candidatesRouter);
