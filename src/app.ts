@@ -6,10 +6,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dbConnection from './config/dbconnection';
 
-var logger = require('morgan');
-const MongoStore = require('connect-mongo')(session);
-
 import loginRouter from './routes/auth';
+import aggregateRouter from './routes/total';
+import candidatesRouter from './routes/candidates';
+import familiesRouter from './routes/families';
+
+const MongoStore = require('connect-mongo')(session);
 
 const IN_PROD = process.env.NODE_ENV === 'production';
 
@@ -68,13 +70,19 @@ app.use(
 app.use(compression());
 app.use(cors({ origin: '*' }));
 
-app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes here
 app.get('/', (_req, res) => res.json('hello world'));
 app.use('/auth', loginRouter);
+app.use('/aggregate', aggregateRouter);
+app.use('/candidates', candidatesRouter);
+app.use('/families', familiesRouter);
+
+app.use('*', (_req, res) =>
+  res.status(404).json({ err: 'resource not found, check your url' }),
+);
 
 // catch 404 and forward to error handler
 app.use(function(_req: Request, _res: Response, next: NextFunction) {

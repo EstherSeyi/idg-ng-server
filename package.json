@@ -1,12 +1,18 @@
 {
   "name": "idp-ng-server",
   "version": "0.0.0",
+  "main": "bin/www",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "node ./bin/www",
+    "postinstall": "tsc",
+    "build": "scripts/build.sh",
+    "start": "bin/www",
     "compile:dev": "tsc -w",
     "dev": "tsc --watch & nodemon bin/www"
+  },
+  "engines": {
+    "node": "10.16.0"
   },
   "dependencies": {
     "@hapi/joi": "15.1.1",

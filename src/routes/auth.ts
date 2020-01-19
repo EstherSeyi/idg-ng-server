@@ -1,11 +1,17 @@
 import { Router, Request, Response } from 'express';
-import { attemptLogin } from '../controllers/auth';
-import { getAUser } from '../controllers/user';
+import { attemptLogin } from '../services/auth';
+import { getAUser } from '../services/user';
 import { validateLogin } from '../validation/user';
 
 const router = Router();
 
 router.post('/login', async function(req: Request, res: Response) {
+  const user = req.session!.user;
+
+  if (user) {
+    return res.status(200).json({ data: user });
+  }
+
   // validate input
   const { error, value } = validateLogin(req.body);
 
