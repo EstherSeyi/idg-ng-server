@@ -17,23 +17,6 @@ var app = express();
 
 dbConnection();
 
-var whitelist = [
-  'https://peaceful-mcclintock-c091dd.netlify.com',
-  'http://localhost:3000',
-];
-var corsOptionsDelegate = function(req: any, callback: any) {
-  var corsOptions;
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = {
-      origin: true,
-      allowedHeaders: ['Content-Type', 'Authorization'],
-    }; // reflect (enable) the requested origin in the CORS response
-  } else {
-    corsOptions = { origin: false }; // disable CORS for this request
-  }
-  callback(null, corsOptions); // callback expects two parameters: error and options
-};
-
 // Setup Request logging
 const logFormat = IN_PROD ? 'combined' : 'dev';
 
@@ -83,7 +66,7 @@ app.use(
   }),
 );
 app.use(compression());
-app.use(cors(corsOptionsDelegate));
+app.use(cors({ origin: '*' }));
 
 app.use(logger('dev'));
 app.use(express.json());
