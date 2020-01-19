@@ -1,6 +1,7 @@
 var createError = require('http-errors');
 import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
+const MongoDBStore = require('connect-mongodb-session')(session);
 import compression from 'compression';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -10,8 +11,6 @@ import loginRouter from './routes/auth';
 import aggregateRouter from './routes/total';
 import candidatesRouter from './routes/candidates';
 import familiesRouter from './routes/families';
-
-const MongoStore = require('connect-mongo')(session);
 
 const IN_PROD = process.env.NODE_ENV === 'production';
 
@@ -51,10 +50,16 @@ app.use(
 app.disable('x-powered-by');
 app.use(
   session({
-    store: new MongoStore({
-      url: process.env.MONGO_URL,
-      ttl: 14 * 24 * 60 * 60,
-    }),
+    store: new MongoDBStore(
+      {
+        url: process.env.MONGO_URL,
+        databaseName: 'idp',
+        collection: 'mySessions',
+      },
+      function(error: any) {
+        console.log('adsad', error);
+      },
+    ),
     name: 'idp-sesh',
     secret: `${process.env.SESSION_SECRET}`,
     resave: true,
@@ -74,7 +79,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes here
-app.get('/', (_req, res) => res.json('hello world'));
+app.use('/', (_req, res) => res.json('hello world'));
 app.use('/auth', loginRouter);
 app.use('/aggregate', aggregateRouter);
 app.use('/candidates', candidatesRouter);
