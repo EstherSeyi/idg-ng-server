@@ -1,6 +1,8 @@
 var createError = require('http-errors');
 import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
+const MongoStore = require('connect-mongo')(session);
+import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -10,8 +12,6 @@ import loginRouter from './routes/auth';
 import aggregateRouter from './routes/total';
 import candidatesRouter from './routes/candidates';
 import familiesRouter from './routes/families';
-
-const MongoStore = require('connect-mongo')(session);
 
 const IN_PROD = process.env.NODE_ENV === 'production';
 
@@ -51,10 +51,7 @@ app.use(
 app.disable('x-powered-by');
 app.use(
   session({
-    store: new MongoStore({
-      url: process.env.MONGO_URL,
-      ttl: 14 * 24 * 60 * 60,
-    }),
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
     name: 'idp-sesh',
     secret: `${process.env.SESSION_SECRET}`,
     resave: true,
