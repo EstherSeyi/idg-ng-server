@@ -1,7 +1,8 @@
 var createError = require('http-errors');
 import express, { Request, Response, NextFunction } from 'express';
 import session from 'express-session';
-const MongoDBStore = require('connect-mongodb-session')(session);
+const MongoStore = require('connect-mongo')(session);
+import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors';
 import morgan from 'morgan';
@@ -50,16 +51,7 @@ app.use(
 app.disable('x-powered-by');
 app.use(
   session({
-    store: new MongoDBStore(
-      {
-        url: process.env.MONGO_URL,
-        databaseName: 'idp',
-        collection: 'mySessions',
-      },
-      function(error: any) {
-        console.log('adsad', error);
-      },
-    ),
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
     name: 'idp-sesh',
     secret: `${process.env.SESSION_SECRET}`,
     resave: true,
