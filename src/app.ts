@@ -80,6 +80,10 @@ app.use('/aggregate', aggregateRouter);
 app.use('/candidates', candidatesRouter);
 app.use('/families', familiesRouter);
 
+app.use('*', (_req, res) =>
+  res.status(404).json({ err: 'resource not found, check your url' }),
+);
+
 // catch 404 and forward to error handler
 app.use(function(_req: Request, _res: Response, next: NextFunction) {
   next(createError(404));
