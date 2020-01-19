@@ -9,6 +9,7 @@ import dbConnection from './config/dbconnection';
 import loginRouter from './routes/auth';
 import aggregateRouter from './routes/total';
 import candidatesRouter from './routes/candidates';
+import familiesRouter from './routes/families';
 
 const MongoStore = require('connect-mongo')(session);
 
@@ -77,6 +78,7 @@ app.get('/', (_req, res) => res.json('hello world'));
 app.use('/auth', loginRouter);
 app.use('/aggregate', aggregateRouter);
 app.use('/candidates', candidatesRouter);
+app.use('/families', familiesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(_req: Request, _res: Response, next: NextFunction) {
