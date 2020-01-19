@@ -66,7 +66,7 @@ app.use(
   }),
 );
 app.use(compression());
-app.use(cors({ origin: '*' }));
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
