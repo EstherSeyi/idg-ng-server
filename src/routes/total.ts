@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { aggregateData } from '../controllers/total';
+import { aggregateData } from '../controllers/aggregate';
 
 const router = Router();
 
-router.post('/', aggregateData);
+router.get('/', aggregateData);
 
 export default router;

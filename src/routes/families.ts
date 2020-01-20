@@ -3,6 +3,6 @@ import { fetchFamilies } from '../controllers/families';
 
 const router = Router();
 
-router.post('/', fetchFamilies);
+router.get('/', fetchFamilies);
 
 export default router;

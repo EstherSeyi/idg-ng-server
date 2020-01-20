@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getFamilies } from '../services/families';
-import { getFamilyCount } from '../services/total';
+import { getFamilyCount } from '../services/aggregate';
 
 export async function fetchFamilies(req: Request, res: Response) {
   const { pageNum, pageSize } = req.query;

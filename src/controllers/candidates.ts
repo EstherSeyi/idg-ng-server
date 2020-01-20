@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getCandidates } from '../services/candidates';
-import { getCandidateCount } from '../services/total';
+import { getCandidateCount } from '../services/aggregate';
 
 export async function fetchCandidates(req: Request, res: Response) {
   const { pageNum, pageSize } = req.query;
