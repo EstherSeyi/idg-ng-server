@@ -4,7 +4,7 @@ export interface INewUser {
   id?: string;
   name: string;
   email: string;
-  password: string;
+  password?: string;
 }
 
 export interface IUserDocument extends Document {
