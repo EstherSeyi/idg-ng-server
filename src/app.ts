@@ -1,12 +1,11 @@
 var createError = require('http-errors');
 import express, { Request, Response, NextFunction } from 'express';
-import session from 'express-session';
-const MongoStore = require('connect-mongo')(session);
-import mongoose from 'mongoose';
 import compression from 'compression';
 import cors from 'cors';
 import morgan from 'morgan';
+
 import dbConnection from './config/dbconnection';
+import { validateJWT } from './middleware/checkJwt';
 
 import loginRouter from './routes/auth';
 import aggregateRouter from './routes/total';
@@ -49,21 +48,6 @@ app.use(
 );
 
 app.disable('x-powered-by');
-app.use(
-  session({
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
-    name: 'idp-sesh',
-    secret: `${process.env.SESSION_SECRET}`,
-    resave: true,
-    rolling: true,
-    saveUninitialized: false,
-    cookie: {
-      sameSite: 'none',
-      httpOnly: true,
-      secure: IN_PROD,
-    },
-  }),
-);
 app.use(compression());
 app.use(cors({ origin: '*' }));
 
@@ -73,6 +57,7 @@ app.use(express.urlencoded({ extended: false }));
 // Routes here
 app.get('/', (_req, res) => res.json('hello world'));
 app.use('/auth', loginRouter);
+app.use(validateJWT);
 app.use('/aggregate', aggregateRouter);
 app.use('/candidates', candidatesRouter);
 app.use('/families', familiesRouter);
