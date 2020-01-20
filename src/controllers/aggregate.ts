@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as aggregateFuncs from '../services/total';
+import * as aggregateFuncs from '../services/aggregate';
 
 export async function aggregateData(_req: Request, res: Response) {
   const funcArray = Object.values(aggregateFuncs);

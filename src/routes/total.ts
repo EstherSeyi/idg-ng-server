@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { aggregateData } from '../controllers/total';
+import { aggregateData } from '../controllers/aggregate';
 
 const router = Router();
 
