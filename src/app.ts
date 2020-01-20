@@ -11,6 +11,7 @@ import loginRouter from './routes/auth';
 import aggregateRouter from './routes/total';
 import candidatesRouter from './routes/candidates';
 import familiesRouter from './routes/families';
+import campsRouter from './routes/camps';
 
 const IN_PROD = process.env.NODE_ENV === 'production';
 
@@ -61,6 +62,7 @@ app.use(validateJWT);
 app.use('/aggregate', aggregateRouter);
 app.use('/candidates', candidatesRouter);
 app.use('/families', familiesRouter);
+app.use('/camps', campsRouter);
 
 app.use('*', (_req, res) =>
   res.status(404).json({ err: 'resource not found, check your url' }),
