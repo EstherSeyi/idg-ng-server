@@ -3,6 +3,6 @@ import { aggregateData } from '../controllers/total';
 
 const router = Router();
 
-router.post('/', aggregateData);
+router.get('/', aggregateData);
 
 export default router;

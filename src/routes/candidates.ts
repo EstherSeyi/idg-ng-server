@@ -3,6 +3,6 @@ import { fetchCandidates } from '../controllers/candidates';
 
 const router = Router();
 
-router.post('/', fetchCandidates);
+router.get('/', fetchCandidates);
 
 export default router;
