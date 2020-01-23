@@ -3,7 +3,7 @@ import { getCandidates, selectCandidates } from '../services/candidates';
 import { getCandidateCount } from '../services/aggregate';
 
 export async function fetchCandidates(req: Request, res: Response) {
-  const { pageNum } = req.params;
+  const { pageNum } = req.query;
 
   try {
     const candidates = await getCandidates(parseInt(pageNum));
@@ -17,7 +17,7 @@ export async function fetchCandidates(req: Request, res: Response) {
 }
 
 export async function filterCandidates(req: Request, res: Response) {
-  const { pageNum } = req.params;
+  const { pageNum } = req.query;
   const filterParams = req.body;
 
   try {
