@@ -10,7 +10,7 @@ export async function getCandidates(pageNum: number) {
   const candidates = await Candidate.find({})
     .skip(skips)
     .limit(pageSize)
-    .select({ _id: 0, __v: 0 });
+    .select({ createdAt: 0, updatedAt: 0, _id: 0, __v: 0 });
 
   return candidates;
 }
@@ -25,7 +25,7 @@ export async function selectCandidates(pageNum: number, filterParams: {}) {
   const candidates = await Candidate.find(filterParams)
     .skip(skips)
     .limit(pageSize)
-    .select({ _id: 0, __v: 0 });
+    .select({ createdAt: 0, updatedAt: 0, _id: 0, __v: 0 });
 
   return candidates;
 }
