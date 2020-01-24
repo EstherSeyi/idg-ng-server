@@ -18,7 +18,18 @@ export async function fetchCandidates(req: Request, res: Response) {
 
 export async function filterCandidates(req: Request, res: Response) {
   const { pageNum } = req.query;
-  const filterParams = req.body;
+  let filterParams = req.body;
+
+  filterParams = Object.keys(filterParams).reduce(
+    (acca: { [index: string]: any }, key) => {
+      if (!filterParams[key]) {
+        return acca;
+      }
+      acca[key] = filterParams[key];
+      return acca;
+    },
+    {},
+  );
 
   try {
     const candidates = await selectCandidates(parseInt(pageNum), filterParams);

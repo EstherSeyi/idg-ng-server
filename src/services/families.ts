@@ -9,7 +9,8 @@ export async function getFamilies(pageSize: number, pageNum: number) {
 
   const families = await Family.find({})
     .skip(skips)
-    .limit(pageSize);
+    .limit(pageSize)
+    .select({ createdAt: 0, updatedAt: 0, _id: 0, __v: 0 });
 
   return families;
 }
