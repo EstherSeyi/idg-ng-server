@@ -28,6 +28,9 @@
     "morgan": "1.9.1",
     "uuid": "3.3.3"
   },
+  "engines": {
+    "node": "10.16.0"
+  },
   "devDependencies": {
     "@types/bcryptjs": "2.4.2",
     "@types/compression": "1.0.1",
