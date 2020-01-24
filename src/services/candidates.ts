@@ -22,10 +22,12 @@ export async function selectCandidates(pageNum: number, filterParams: {}) {
   //  Calculate number of documents to skip
   const skips = pageSize * (pageNum - 1);
 
-  const candidates = await Candidate.find(filterParams)
+  const candidateCount = Candidate.find(filterParams).countDocuments();
+
+  const candidates = Candidate.find(filterParams)
     .skip(skips)
     .limit(pageSize)
     .select({ createdAt: 0, updatedAt: 0, _id: 0, __v: 0 });
 
-  return candidates;
+  return Promise.all([candidateCount, candidates]);
 }
