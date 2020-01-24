@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { seedUsers, seedCamps, seedCandidates, seedFamilies } from './seed';
+// import { seedUsers, seedCamps, seedCandidates, seedFamilies } from './seed';
 
 async function dbConnection() {
   await mongoose
@@ -11,11 +11,11 @@ async function dbConnection() {
     })
     .then(mongoDBConnected);
 
-  await disconnectDB();
-  await seedUsers();
-  await seedCamps();
-  await seedCandidates();
-  await seedFamilies();
+  // await disconnectDB();
+  // await seedUsers();
+  // await seedCamps();
+  // await seedCandidates();
+  // await seedFamilies();
   mongoose.connection.on('disconnected', mongoDBDisconnected);
   mongoose.connection.on('error', mongoDBError);
 }
@@ -33,9 +33,9 @@ function mongoDBError(err: Error) {
   process.exit(1);
 }
 
-async function disconnectDB() {
-  await mongoose.connection.db.dropDatabase();
-  console.log('DB dropped');
-}
+// async function disconnectDB() {
+//   await mongoose.connection.db.dropDatabase();
+//   console.log('DB dropped');
+// }
 
 export default dbConnection;
