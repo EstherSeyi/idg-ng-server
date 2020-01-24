@@ -38,7 +38,9 @@ export async function filterCandidates(req: Request, res: Response) {
       filterParams,
     );
 
-    return res.status(200).json({ count: candidateCount, data: candidates });
+    return res
+      .status(200)
+      .json({ count: { candidates: candidateCount }, data: candidates });
   } catch (error) {
     return res.status(500).json({ message: 'something went wrong' });
   }
